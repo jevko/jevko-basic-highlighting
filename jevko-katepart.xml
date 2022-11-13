@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language name="jevko" version="1" kateversion="2.4" section="Sources" extensions="*.jevko;*.jvk">
+  <highlighting>
+    <!-- <list name="somename">
+      <item>class</item>
+      <item>const</item>
+    </list>
+    <list name="othername">
+      <item>str</item>
+      <include>types##ISO C++</include>
+    </list> -->
+    <contexts>
+      <context attribute="Normal Text" lineEndContext="#stay" name="Normal Text">
+        <RegExpr context="prefix" attribute="Keyword" String="((`[`\[\]])|[^`\[\]])+(?=\[)" lookAhead="true" beginRegion="RegionJevko" />
+        <RegExpr context="suffix" attribute="String" String="((`[`\[\]])|[^`\[\]])+" lookAhead="true" />
+      </context>
+      <context attribute="Keyword" lineEndContext="#stay" name="prefix">
+        <RegExpr context="#stay" attribute="Digraph2" String="`[`\[\]]" />
+        <RegExpr context="#pop" attribute="Normal Text" String="(\[)" />
+      </context>
+      <context attribute="String" lineEndContext="#pop" name="suffix">
+        <RegExpr context="#stay" attribute="Digraph" String="`[`\[\]]" />
+        <RegExpr context="#pop" attribute="Normal Text" String="\]" endRegion="RegionJevko" />
+      </context>
+    </contexts>
+    <itemDatas>
+      <itemData name="Digraph" defStyleNum="dsSpecialChar" />
+      <itemData name="Digraph2" defStyleNum="dsOperator" />
+      <itemData name="Normal Text" defStyleNum="dsNormal" />
+      <itemData name="Keyword" defStyleNum="dsKeyword" />
+      <itemData name="String" defStyleNum="dsString" />
+    </itemDatas>
+  </highlighting>
+  <general>
+    <!-- <comments>
+          <comment name="singleLine" start="#"/>
+          <comment name="multiLine" start="###" end="###" region="CommentFolding"/>
+        </comments> -->
+    <keywords casesensitive="1" />
+    <folding indentationsensitive="0" />
+    <emptyLines>
+      <emptyLine regexpr="\s+" />
+      <emptyLine regexpr="\s*#.*" />
+    </emptyLines>
+    <spellchecking>
+      <encoding char="á" string="\'a" />
+      <encoding char="à" string="\`a" />
+    </spellchecking>
+  </general>
+</language>
