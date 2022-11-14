@@ -30,6 +30,10 @@ Example screenshot:
 
 ![screenshot](screenshot.png)
 
+## CodeMirror 6 language package for Jevko
+
+See [this repository](https://github.com/jevko/codemirror6language).
+
 ## Known Issues
 
 There is an unfixable bug in all line-oriented syntax highlighting environments
@@ -49,6 +53,10 @@ that span multiple lines. For properly highlighting Jevko this is not sufficient
 
 The known line-oriented enviroments are:
 
-- Visual Studio Code -- basic syntax highlighting via TextMate grammars (but not
-  semantic highlighting)
+- Visual Studio Code -- basic syntax highlighting via TextMate grammars
 - KatePart Syntax Highlight System
+
+Known environments that don't suffer from this limitation:
+
+- Visual Studio Code -- semantic highlighting
+- CodeMirror 6
