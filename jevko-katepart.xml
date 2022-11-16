@@ -40,12 +40,12 @@
         <IncludeRules context="heredoc" />
         <IncludeRules context="##YAML" includeAttrib="true"/>
       </context>
-      <!-- broken heredocs -->
+      <!-- broken heredocs: require fallthru to heredoc-cleanup -->
       <context attribute="String" lineEndContext="#stay" name="heredoc-css" fallthrough="1" fallthroughContext="#pop!heredoc-cleanup">
         <IncludeRules context="heredoc" />
         <IncludeRules context="##CSS" includeAttrib="true"/>
       </context>
-      <context attribute="String" lineEndContext="#stay" name="heredoc-ini" dynamic="true" fallthrough="1" fallthroughContext="#pop!heredoc-cleanup">
+      <context attribute="String" lineEndContext="#stay" name="heredoc-ini" dynamic="true" fallthrough="1" fallthroughContext="#pop!heredoc-cleanup-ini">
         <IncludeRules context="heredoc" dynamic="true" />
         <IncludeRules context="##INI Files" includeAttrib="true"/>
       </context>
@@ -57,9 +57,13 @@
       <context attribute="String" lineEndContext="#stay" name="heredoc">
         <RegExpr attribute="Heredoc" context="#pop" String="/%1/" dynamic="true" endRegion="heredocRegion" />
       </context>
-      <!-- semi-fixes heredocs in broken languages, e.g. CSS, XML, INI -->
-      <context attribute="String" lineEndContext="#stay" name="heredoc-cleanup"  dynamic="true">
+      <!-- semi-fixes broken heredocs, e.g. CSS, XML, INI -->
+      <context attribute="String" lineEndContext="#stay" name="heredoc-cleanup">
         <RegExpr attribute="Heredoc" context="#pop" String="/[^/]*/" dynamic="true" endRegion="heredocRegion" />
+      </context>
+      <!-- more robust lang-specific fixes -->
+      <context attribute="String" lineEndContext="#stay" name="heredoc-cleanup-ini">
+        <RegExpr attribute="Heredoc" context="#pop" String="/ini/" dynamic="true" endRegion="heredocRegion" />
       </context>
     </contexts>
     <itemDatas>
