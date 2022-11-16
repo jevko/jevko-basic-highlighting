@@ -13,6 +13,14 @@
       <context attribute="Normal Text" lineEndContext="#stay" name="Normal Text">
         <RegExpr context="prefix" attribute="Keyword" String="((`[`\[\]])|[^`\[\]])+(?=\[)" lookAhead="true" beginRegion="RegionJevko" />
         <RegExpr context="suffix" attribute="String" String="((`[`\[\]])|[^`\[\]])+" lookAhead="true" />
+
+        <!-- heredocs -->
+        <RegExpr context="heredoc-css" attribute="Heredoc" String="`/(css)/" beginRegion="heredocRegion" />
+        <RegExpr context="heredoc-json" attribute="Heredoc" String="`/(json)/" beginRegion="heredocRegion" />
+        <RegExpr context="heredoc-yaml" attribute="Heredoc" String="`/(yaml)/" beginRegion="heredocRegion" />
+        <RegExpr context="heredoc-ini" attribute="Heredoc" String="`/(ini)/" beginRegion="heredocRegion" />
+        <RegExpr context="heredoc-xml" attribute="Heredoc" String="`/(xml)/" beginRegion="heredocRegion" />
+        <RegExpr context="heredoc" attribute="Heredoc" String="`/([^/]*)/" beginRegion="heredocRegion" />
       </context>
       <context attribute="Keyword" lineEndContext="#stay" name="prefix">
         <RegExpr context="#stay" attribute="Digraph2" String="`[`\[\]]" />
@@ -22,8 +30,40 @@
         <RegExpr context="#stay" attribute="Digraph" String="`[`\[\]]" />
         <RegExpr context="#pop" attribute="Normal Text" String="\]" endRegion="RegionJevko" />
       </context>
+
+      <!-- working heredocs -->
+      <context attribute="String" lineEndContext="#stay" name="heredoc-json">
+        <IncludeRules context="heredoc" />
+        <IncludeRules context="##JSON" includeAttrib="true"/>
+      </context>
+      <context attribute="String" lineEndContext="#stay" name="heredoc-yaml">
+        <IncludeRules context="heredoc" />
+        <IncludeRules context="##YAML" includeAttrib="true"/>
+      </context>
+      <!-- broken heredocs -->
+      <context attribute="String" lineEndContext="#stay" name="heredoc-css" fallthrough="1" fallthroughContext="#pop!heredoc-cleanup">
+        <IncludeRules context="heredoc" />
+        <IncludeRules context="##CSS" includeAttrib="true"/>
+      </context>
+      <context attribute="String" lineEndContext="#stay" name="heredoc-ini" dynamic="true" fallthrough="1" fallthroughContext="#pop!heredoc-cleanup">
+        <IncludeRules context="heredoc" dynamic="true" />
+        <IncludeRules context="##INI Files" includeAttrib="true"/>
+      </context>
+      <context attribute="String" lineEndContext="#stay" name="heredoc-xml" fallthrough="1" fallthroughContext="#pop!heredoc-cleanup">
+        <IncludeRules context="heredoc" />
+        <IncludeRules context="##XML" includeAttrib="true"/>
+      </context>
+      <!-- default heredoc -->
+      <context attribute="String" lineEndContext="#stay" name="heredoc">
+        <RegExpr attribute="Heredoc" context="#pop" String="/%1/" dynamic="true" endRegion="heredocRegion" />
+      </context>
+      <!-- semi-fixes heredocs in broken languages, e.g. CSS, XML, INI -->
+      <context attribute="String" lineEndContext="#stay" name="heredoc-cleanup"  dynamic="true">
+        <RegExpr attribute="Heredoc" context="#pop" String="/[^/]*/" dynamic="true" endRegion="heredocRegion" />
+      </context>
     </contexts>
     <itemDatas>
+      <itemData name="Heredoc" defStyleNum="dsSpecialString" />
       <itemData name="Digraph" defStyleNum="dsSpecialChar" />
       <itemData name="Digraph2" defStyleNum="dsOperator" />
       <itemData name="Normal Text" defStyleNum="dsNormal" />
