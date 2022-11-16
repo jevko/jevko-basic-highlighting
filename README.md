@@ -20,7 +20,7 @@ It can be used for example to highlight Jevko syntax in Markdown with pandoc,
 e.g.:
 
 ```
-pandoc -f markdown --syntax-definition=jevko-katepart.xml file.jevko -s > out.html
+pandoc -f markdown --syntax-definition=jevko-katepart.xml file.md -s > out.html
 ```
 
 To use, copy the file to a location of your choice and direct your tool to it
